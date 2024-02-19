@@ -1,0 +1,30 @@
+{
+  "devDependencies": {
+    "@testing-library/react": "^14.2.1",
+    "react-scripts": "^5.0.1",
+    "safetest": "^0.1.11",
+    "vitest": "^1.2.2"
+  },
+  "scripts": {
+    "safetest": "OPT_URL=${TARGET_URL:-http://localhost:3000} react-scripts --inspect test --runInBand --testMatch '**/src/*.safetest.{j,t}s{,x}' --setupFilesAfterEnv ./setup-safetest.tsx",
+    "safetest:ci": "rm -f artifacts.json && OPT_URL=${DEPLOYED_URL} OPT_CI=1 OPT_DOCKER=1 npm run safetest -- --watchAll=false --ci=1 --json --outputFile=results.json",
+    "safetest:regenerate-screenshots": "OPT_DOCKER=1 npm run safetest -- --watchAll=false --update-snapshot",
+    "start": "react-scripts start"
+  },
+  "dependencies": {
+    "jest": "^27.5.1",
+    "react-dom": "^18.2.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
