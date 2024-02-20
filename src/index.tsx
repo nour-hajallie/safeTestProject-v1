@@ -1,18 +1,21 @@
-import ReactDOM from 'react-dom';
-import {App} from './App.tsx';
+import ReactDOM from "react-dom";
 import { bootstrap } from 'safetest/react';
+import App from "./App.tsx";
 import React from 'react';
 
+
 const container = document.getElementById("app");
-const element = <App admin={true}/>;
+const element = <App />;
 
 const isDev = process.env.NODE_ENV !== 'production';
 
-const elementArray = [element];
-
 bootstrap({
-  element:elementArray,
-  render: (element) => ReactDOM.render(elementArray,container),
+  element,
+  //render: (element) => ReactDOM.render(element, container),
+  // If using React 18:
+   render: (element) =>  (ReactDOM as any).createRoot(container).render(element),
+
+  // Add one of the following depending on your bundler...
 
   // Webpack:
   webpackContext: isDev && import.meta.webpackContext('.', {
@@ -20,4 +23,14 @@ bootstrap({
     regExp: /\.safetest$/,
     mode: 'lazy'
   })
+
+  // Vite:
+  // importGlob: isDev && import.meta.glob('./**/*.safetest.{j,t}s{,x}'),
+
+  // Using the `npx safetest generate-import-map src/Bootstrap.tsx src > src/imports.tsx` syntax:
+  // imports, // Where imports is defined as `import imports from './imports';`
+
+  // Other:
+  // import: isDev && async (s) => import(`${s.replace(/.*src/, '.').replace(/\.safetest$/, '')}.safetest`),
+
 });
